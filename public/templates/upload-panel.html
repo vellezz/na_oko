@@ -1,0 +1,100 @@
+<template id="upload-panel-template">
+  <div class="panel-inner toolbar">
+    <h3>NaOko v1.0</h3>
+
+    <button data-action="paste" title="Wklej obraz">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path
+          d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"
+        />
+        <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+      </svg>
+    </button>
+
+    <input type="file" accept="image/*" title="Wczytaj obraz" />
+
+    <button data-action="clear" title="Usuń wszystkie">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M4 7l16 0" />
+        <path d="M10 11l0 6" />
+        <path d="M14 11l0 6" />
+        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+      </svg>
+    </button>
+    <button data-action="hide" title="Ukryj panel">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+        <path
+          d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"
+        />
+        <path d="M3 3l18 18" />
+      </svg>
+    </button>
+
+    <button data-action="toggle-theme" title="Zmień motyw">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" />
+        <path d="M6.343 17.657l-1.414 1.414" />
+        <path d="M6.343 6.343l-1.414 -1.414" />
+        <path d="M17.657 6.343l1.414 -1.414" />
+        <path d="M17.657 17.657l1.414 1.414" />
+        <path d="M4 12h-2" />
+        <path d="M12 4v-2" />
+        <path d="M20 12h2" />
+        <path d="M12 20v2" />
+      </svg>
+    </button>
+  </div>
+  <div class="overlay-list-container">
+    <ul class="overlay-list"></ul>
+  </div>
+</template>

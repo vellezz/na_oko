@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Na Oko",
+  "version": "1.0",
+  "description": "Nakłada obrazki na stronę dla pixel perfect designu",
+  "action": {
+    "default_icon": "icon.png"
+  },
+  "permissions": ["storage", "tabs", "activeTab", "scripting", "clipboardRead"],
+  "host_permissions": ["<all_urls>"],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "templates/*.html",
+        "icons/*.svg",
+        "fonts/*.woff",
+        "fonts/*.woff2",
+        "fonts/*.ttf"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
