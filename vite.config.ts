@@ -48,7 +48,7 @@ export default defineConfig({
       targets: [
         { src: 'manifest.json', dest: 'dist' },
         { src: 'icon.png', dest: 'dist' },
-        { src: 'node_modules/@tabler/icons-webfont/dist/fonts/*', dest: 'dist/fonts' },
+        // { src: 'node_modules/@tabler/icons-webfont/dist/fonts/*', dest: 'dist/fonts' },
       ],
       hook: 'writeBundle',
     }),

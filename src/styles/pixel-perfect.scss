@@ -58,9 +58,16 @@ body.pixel-perfect-ext.theme-dark {
     gap: 10px;
 
     h3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       font-size: 14px;
       margin: 0;
       text-align: center;
+      span {
+        font-size: 9px;
+        font-weight: normal;
+      }
     }
 
     button {
@@ -112,25 +119,16 @@ body.pixel-perfect-ext.theme-dark {
   }
 }
 
-#showPanel {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: var(--panel-bg);
-  color: var(--text-color);
-  font-size: 18px;
-  cursor: pointer;
-  z-index: 10000001;
-  backdrop-filter: blur(2px);
-  transition: background 0.2s ease;
+.panel-inner.collapsed button:not([data-action='show']) {
+  display: none;
+}
 
-  &:hover {
-    background: var(--panel-hover);
-  }
+.panel-inner.collapsed button[data-action='show'] {
+  display: inline-flex;
+}
+
+.hidden {
+  display: none !important;
 }
 
 .pixel-perfect-overlay {
@@ -138,6 +136,7 @@ body.pixel-perfect-ext.theme-dark {
   z-index: 999999;
   pointer-events: none;
   border: 2px dashed var(--overlay-border);
+  border-radius: 10px;
 
   .wrapper {
     position: relative;

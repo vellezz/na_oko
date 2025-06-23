@@ -9,7 +9,6 @@ export class UploadPanel {
   private fileInput!: HTMLInputElement;
   private pasteButton!: HTMLButtonElement;
   private clearButton!: HTMLButtonElement;
-  // private overlayList!: HTMLUListElement;
   private hideButton!: HTMLButtonElement;
   private toggleThemeButton!: HTMLButtonElement;
 
@@ -21,10 +20,7 @@ export class UploadPanel {
     this.container.className = 'pixel-perfect-panel';
 
     this.loadTemplate().then(() => {
-      this.showButton = this.createShowButton();
-      this.container.appendChild(this.showButton);
       document.body.appendChild(this.container);
-
       this.bindEvents();
       this.renderOverlayList();
     });
@@ -35,40 +31,17 @@ export class UploadPanel {
     const html = await res.text();
     const wrapper = document.createElement('div');
     wrapper.innerHTML = html.trim();
-
     const template = wrapper.querySelector('template')!;
     const clone = document.importNode(template.content, true);
-
     this.panel = clone.querySelector('.panel-inner')!;
     this.pasteButton = this.panel.querySelector('[data-action="paste"]')!;
     this.clearButton = this.panel.querySelector('[data-action="clear"]')!;
     this.fileInput = this.panel.querySelector('input[type="file"]')!;
-    //this.overlayList = this.panel.querySelector('.overlay-list')!;
     this.hideButton = this.panel.querySelector('[data-action="hide"]')!;
+    this.hideButton.classList.remove('hidden');
+    this.showButton = this.panel.querySelector('[data-action="show"]')!;
     this.toggleThemeButton = this.panel.querySelector('[data-action="toggle-theme"]')!;
-
     this.container.appendChild(this.panel);
-
-    // this.loadIcon(this.pasteButton, 'clipboard.svg', 'Wklej obraz');
-    // this.loadIcon(this.clearButton, 'upload.svg', 'Usuń wszystkie');
-    // this.loadIcon(this.hideButton, 'eye-off.svg', 'Ukryj panel');
-  }
-
-  private createShowButton(): HTMLButtonElement {
-    const btn = document.createElement('button');
-    btn.id = 'showPanel';
-    btn.classList.add('hidden');
-
-    //this.loadIcon(btn, 'layout.svg', '');
-    return btn;
-  }
-
-  private loadIcon1(button: HTMLButtonElement, iconFile: string, label: string) {
-    fetch(chrome.runtime.getURL(`icons/${iconFile}`))
-      .then((res) => res.text())
-      .then((svg) => {
-        button.innerHTML = `${svg} <span style="margin-left:6px">${label}</span>`;
-      });
   }
 
   private bindEvents(): void {
@@ -79,17 +52,18 @@ export class UploadPanel {
     this.pasteButton.addEventListener('click', () => {
       navigator.clipboard
         .read()
-        .then((items) => {
-          for (const item of items) {
-            const type = item.types.find((t) => t.startsWith('image/'));
-            if (type) {
-              item
-                .getType(type)
-                .then((blob) => this.readFile(new File([blob], 'clipboard.png', { type })));
-            }
-          }
-        })
+        .then((items) => this.loadImageFromCLipboard(items))
         .catch(() => alert('Nie udało się wczytać obrazu ze schowka.'));
+    });
+
+    document.addEventListener('keydown', async (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'v') {
+        e.preventDefault();
+        navigator.clipboard
+          .read()
+          .then((items) => this.loadImageFromCLipboard(items))
+          .catch(() => alert('Nie udało się wczytać obrazu ze schowka.'));
+      }
     });
 
     this.fileInput.addEventListener('change', () => {
@@ -104,6 +78,17 @@ export class UploadPanel {
 
     document.addEventListener('overlay:added', () => this.renderOverlayList());
     document.addEventListener('overlay:removed', () => this.renderOverlayList());
+  }
+
+  loadImageFromCLipboard(items: ClipboardItems): void {
+    for (const item of items) {
+      const type = item.types.find((t) => t.startsWith('image/'));
+      if (type) {
+        item
+          .getType(type)
+          .then((blob) => this.readFile(new File([blob], 'clipboard.png', { type })));
+      }
+    }
   }
 
   private toggleTheme(): any {
@@ -122,19 +107,19 @@ export class UploadPanel {
   }
 
   private minimizePanel(): void {
-    this.panel.style.display = 'none';
+    this.panel.classList.add('collapsed');
+    this.hideButton.classList.add('hidden');
     this.showButton.classList.remove('hidden');
   }
 
   private showPanel(): void {
-    this.panel.style.display = 'flex';
+    this.panel.classList.remove('collapsed');
+    this.hideButton.classList.remove('hidden');
     this.showButton.classList.add('hidden');
   }
 
   private renderOverlayList(): void {
-    //this.overlayList.innerHTML = '';
     const overlays: OverlayState[] = this.overlayManager.getStates();
-
     overlays.forEach((state) => {
       const li = document.createElement('li');
       li.textContent = `Overlay #${state.id + 1}`;
@@ -145,9 +130,7 @@ export class UploadPanel {
         this.overlayManager.removeOverlay(state.id);
         this.renderOverlayList();
       });
-
       li.appendChild(removeBtn);
-      //  this.overlayList.appendChild(li);
     });
   }
 }
