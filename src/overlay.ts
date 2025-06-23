@@ -77,7 +77,6 @@ export class Overlay {
     const reposition = () => this.updateControlPosition();
     const observer = new ResizeObserver(reposition);
 
-    console.log('Container:', this.view.container);
     if (!(this.view.container instanceof HTMLElement)) {
       throw new Error('view.container is not an HTMLElement!');
     }

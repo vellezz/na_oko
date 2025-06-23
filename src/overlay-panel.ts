@@ -31,7 +31,7 @@ export class OverlayPanel {
         ) as HTMLElement;
         if (target) target.style.zIndex = '100001';
       });
-      //this.list.appendChild(li);
+      this.list.appendChild(li);
     });
   }
 }
