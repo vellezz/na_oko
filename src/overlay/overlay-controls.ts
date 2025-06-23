@@ -7,11 +7,13 @@ export class OverlayControls {
   public onScaleChange: (value: number) => void = () => {};
   public onReset: () => void = () => {};
   public onRemove: () => void = () => {};
+  public onNegative: () => void = () => {};
 
   private opacityInput!: HTMLInputElement;
   private scaleInput!: HTMLInputElement;
   private resetButton!: HTMLButtonElement;
   private removeButton!: HTMLButtonElement;
+  private negativeButton!: HTMLButtonElement;
 
   constructor(initialOpacity: number, initialScale: number) {
     this.element = document.createElement('div');
@@ -39,6 +41,9 @@ export class OverlayControls {
     this.removeButton = this.element.querySelector<HTMLButtonElement>(
       'button[data-action="remove"]'
     )!;
+    this.negativeButton = this.element.querySelector<HTMLButtonElement>(
+      'button[data-action="negative"]'
+    )!;
   }
 
   private setInitialValues(opacity: number, scale: number): void {
@@ -63,6 +68,9 @@ export class OverlayControls {
 
     this.removeButton.addEventListener('click', () => {
       this.onRemove();
+    });
+    this.negativeButton.addEventListener('click', () => {
+      this.onNegative();
     });
   }
 

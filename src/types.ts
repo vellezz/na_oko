@@ -12,5 +12,6 @@ export interface OverlayState {
   y: number;
   scale: number;
   opacity: number;
-  image: string; // base64 lub data URL
+  image: string;
+  isNegative: boolean;
 }

@@ -15,13 +15,14 @@ export class Overlay {
       scale: savedState.scale ?? 1,
       opacity: savedState.opacity ?? 0.5,
       image: imageSrc,
+      isNegative: savedState.isNegative ?? false,
     };
 
     this.view = new OverlayView(this.id, this.state);
     this.bindEvents();
     this.view.appendTo(document.body);
 
-    this.observePosition(); // Automatyczna obserwacja pozycji
+    this.observePosition();
   }
 
   private bindEvents(): void {
@@ -46,6 +47,11 @@ export class Overlay {
     this.view.onRemove = () => {
       this.remove();
       document.dispatchEvent(new CustomEvent('overlay:removed', { detail: this.id }));
+    };
+
+    this.view.onNegative = () => {
+      this.state.isNegative = !this.state.isNegative;
+      this.view.negative(this.state.isNegative);
     };
   }
 

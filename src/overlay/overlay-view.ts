@@ -13,6 +13,7 @@ export class OverlayView {
   public onPositionChange = (x: number, y: number) => {};
   public onReset = () => {};
   public onRemove = () => {};
+  public onNegative = () => {};
 
   constructor(id: number, state: OverlayState) {
     this.element = document.createElement('div');
@@ -36,7 +37,6 @@ export class OverlayView {
   }
 
   private setup(id: number, state: OverlayState): void {
-    // this.element.classList.add('pixel-perfect-overlay');
     this.element.dataset.id = id.toString();
     this.element.style.left = `${state.x}px`;
     this.element.style.top = `${state.y}px`;
@@ -60,6 +60,7 @@ export class OverlayView {
     };
     this.controls.onReset = () => this.onReset();
     this.controls.onRemove = () => this.onRemove();
+    this.controls.onNegative = () => this.onNegative();
 
     new OverlayDraggable(this.element, (x, y) => this.onPositionChange(x, y));
   }
@@ -74,6 +75,14 @@ export class OverlayView {
     this.image.style.opacity = state.opacity.toString();
     this.image.style.transform = `scale(${state.scale})`;
     this.controls.reset();
+  }
+
+  public negative(negative: boolean): void {
+    if (negative) {
+      this.image.classList.add('negative');
+    } else {
+      this.image.classList.remove('negative');
+    }
   }
 
   public remove(): void {
