@@ -1,6 +1,7 @@
 import { UploadPanel } from './upload-panel';
 import { OverlayManager } from './overlay-manager';
 import '@/styles/pixel-perfect.scss';
+import browser from 'webextension-polyfill';
 
 class ContentScript {
   private overlayManager: OverlayManager;
@@ -23,18 +24,18 @@ class ContentScript {
   }
 
   private setupMessageListener(): void {
-    chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
+    browser.runtime.onMessage.addListener(async (message: any, _) => {
       if (message.type === 'add-overlay' && message.imageSrc) {
         this.overlayManager.addOverlay(message.imageSrc);
-        sendResponse?.({ success: true });
+        return { result: 'ok' };
       }
 
       if (message.type === 'clear-overlays') {
         this.overlayManager.clearAll();
-        sendResponse?.({ success: true });
+        return { result: 'ok' };
       }
 
-      return true;
+      return { error: 'error' };
     });
   }
 }

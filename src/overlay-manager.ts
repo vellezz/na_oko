@@ -1,5 +1,6 @@
 import { Overlay } from './overlay';
 import { OverlayState } from './types';
+import browser from 'webextension-polyfill';
 
 export class OverlayManager {
   private overlays = new Map<number, Overlay>();
@@ -44,15 +45,14 @@ export class OverlayManager {
     return Array.from(this.overlays.values()).map((o) => o.getState());
   }
 
-  private restoreOverlays(): void {
-    chrome.storage.local.get('overlays', (result) => {
-      const saved: OverlayState[] = result.overlays || [];
-      saved.forEach((state) => this.addOverlay(state.image, state));
-    });
+  private async restoreOverlays(): Promise<void> {
+    const result = await browser.storage.local.get('overlays');
+    const saved: OverlayState[] = Array.isArray(result.overlays) ? result.overlays : [];
+    saved.forEach((state) => this.addOverlay(state.image, state));
   }
 
-  private saveStates(): void {
+  private async saveStates(): Promise<void> {
     const states = this.getStates();
-    chrome.storage.local.set({ overlays: states });
+    await browser.storage.local.set({ overlays: states });
   }
 }

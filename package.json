@@ -12,6 +12,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.242",
     "@types/node": "^24.0.3",
+    "@types/webextension-polyfill": "^0.12.3",
     "copyfiles": "^2.4.1",
     "prettier": "^3.5.3",
     "rimraf": "^5.0.1",
@@ -21,6 +22,7 @@
     "vite": "^5.x.x"
   },
   "dependencies": {
-    "@tabler/icons-webfont": "^3.34.0"
+    "@tabler/icons-webfont": "^3.34.0",
+    "webextension-polyfill": "^0.12.0"
   }
 }
