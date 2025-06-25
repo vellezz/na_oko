@@ -1,5 +1,5 @@
 import { Overlay } from './overlay';
-import { OverlayState } from './types';
+import { OverlayState, OverlayEvent } from './types';
 import browser from 'webextension-polyfill';
 
 export class OverlayManager {
@@ -9,7 +9,7 @@ export class OverlayManager {
   constructor() {
     this.restoreOverlays();
 
-    document.addEventListener('overlay:removed', (e: Event) => {
+    document.addEventListener(OverlayEvent.Removed, (e: Event) => {
       const custom = e as CustomEvent<number>;
       this.removeOverlay(custom.detail);
     });
@@ -21,7 +21,7 @@ export class OverlayManager {
     this.overlays.set(id, overlay);
     this.saveStates();
 
-    document.dispatchEvent(new Event('overlay:added'));
+    document.dispatchEvent(new Event(OverlayEvent.Added));
   }
 
   removeOverlay(id: number): void {
@@ -30,7 +30,7 @@ export class OverlayManager {
       overlay.remove();
       this.overlays.delete(id);
       this.saveStates();
-      document.dispatchEvent(new Event('overlay:removed'));
+      document.dispatchEvent(new Event(OverlayEvent.Removed));
     }
   }
 
@@ -38,7 +38,7 @@ export class OverlayManager {
     this.overlays.forEach((overlay) => overlay.remove());
     this.overlays.clear();
     this.saveStates();
-    document.dispatchEvent(new Event('overlay:removed'));
+    document.dispatchEvent(new Event(OverlayEvent.Removed));
   }
 
   getStates(): OverlayState[] {

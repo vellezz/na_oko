@@ -1,6 +1,7 @@
 import { OverlayManager } from './overlay-manager';
-import { OverlayState } from './types';
+import { OverlayState, OverlayEvent } from './types';
 import { applyTheme } from './utils/theme';
+import { Theme } from './utils/theme.type';
 
 export class UploadPanel {
   private container: HTMLDivElement;
@@ -78,8 +79,8 @@ export class UploadPanel {
       this.renderOverlayList();
     });
 
-    document.addEventListener('overlay:added', () => this.renderOverlayList());
-    document.addEventListener('overlay:removed', () => this.renderOverlayList());
+    document.addEventListener(OverlayEvent.Added, () => this.renderOverlayList());
+    document.addEventListener(OverlayEvent.Removed, () => this.renderOverlayList());
   }
 
   loadImageFromCLipboard(items: ClipboardItems): void {
@@ -94,8 +95,8 @@ export class UploadPanel {
   }
 
   private toggleTheme(): any {
-    const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const currentTheme = document.body.classList.contains('theme-dark') ? Theme.Dark : Theme.Light;
+    const newTheme = currentTheme === Theme.Dark ? Theme.Light : Theme.Dark;
     applyTheme(newTheme);
   }
 

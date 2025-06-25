@@ -1,17 +1,23 @@
 import browser from 'webextension-polyfill';
+import { Theme } from './theme.type';
 
-export function applyTheme(theme: 'light' | 'dark') {
+export function applyTheme(theme: Theme) {
+  const currentTheme = document.body.classList.contains('theme-dark')
+    ? Theme.Dark
+    : document.body.classList.contains('theme-light')
+      ? Theme.Light
+      : null;
+
+  if (currentTheme === theme) return;
+
   document.body.classList.remove('theme-light', 'theme-dark');
   document.body.classList.add(`theme-${theme}`);
   browser.storage.local.set({ theme });
 }
 
-export async function restoreTheme(): Promise<'light' | 'dark'> {
+export async function restoreTheme(): Promise<Theme> {
   const result = await browser.storage.local.get('theme');
-  let theme = result.theme;
-  if (theme !== 'light' && theme !== 'dark') {
-    theme = 'light';
-  }
-  applyTheme(theme as 'light' | 'dark');
-  return theme as 'light' | 'dark';
+  let theme: Theme = result.theme === Theme.Dark ? Theme.Dark : Theme.Light;
+  applyTheme(theme);
+  return theme;
 }

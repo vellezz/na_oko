@@ -15,3 +15,13 @@ export interface OverlayState {
   image: string;
   isNegative: boolean;
 }
+
+export enum OverlayEvent {
+  Added = 'overlay:added',
+  Removed = 'overlay:removed',
+}
+
+export enum MessageType {
+  AddOverlay = 'add-overlay',
+  ClearOverlays = 'clear-overlays',
+}
